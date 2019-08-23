@@ -27,6 +27,9 @@
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> totalpage;</span><br><span class="line"><span class="keyword">const</span> p = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">         totalpage= collection.find().count();</span><br><span class="line">         resolve(totalpage)</span><br><span class="line">     &#125;)</span><br><span class="line"> &#125;;</span><br><span class="line"> p().then(<span class="function"><span class="params">val</span> =&gt;</span> &#123;</span><br><span class="line">     <span class="built_in">console</span>.log(val);</span><br><span class="line">     <span class="comment">// 打印的即为需要的表长度</span></span><br><span class="line"> &#125;)</span><br></pre></td></tr></table></figure>
 
 <p>&emsp;&emsp;<code>Promise {&lt;pending &gt;}</code>成功解决，此问题还可使用<code>async await</code>解决，这里不过多叙述。</p>
+<a id="more"></a>
+
+
 <p>&emsp;&emsp;但是咱们还是没有直接用<code>count()</code>解决问题啊！本着初心的态度，又认真的查看的文档，大胆的尝试，最后发现问题所在  -  - -  -       原来只需要加一个回调函数就行了，<code>collection.find().count()</code>是针对数据库的操作才可返回数值（比如终端里命令查询），在nodeJS里面只能用下面的方法：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">collection.find().count(<span class="function"><span class="keyword">function</span>(<span class="params">err, count</span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(result)</span><br><span class="line">	<span class="comment">//result 其实就是获取的数量值</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
