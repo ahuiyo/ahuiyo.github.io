@@ -23,21 +23,21 @@
 <a id="more"></a>
 
 <p>执行结果如下:</p>
-<p><img src="/.cn//%E5%9B%BE%E7%89%871.png" alt="图片1"></p>
+<p><img src="/.cn//%E5%9B%BE%E7%89%871.png" alt></p>
 <p>&emsp;&emsp;我们可以看到 beforeCreate()、created() 两个个生命周期方法被依次执行，而其他的生命周期方法并没有被触发执行。</p>
 <p>如果接下来我们加上 el 属性</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">new Vue(&#123;</span><br><span class="line">    el: &apos;#app&apos;, // 设置 el 属性</span><br><span class="line">    // ...</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;我们发现，再一次页面加载时触发了 beforeCreate, created, beforeMount, mounted 这几个钩子。<br><img src="/.cn//%E5%9B%BE%E7%89%872.png" alt="图片2"><br>&emsp;&emsp;这里我们可以知道，在 new 一个 Vue 实例的时候，如果没有设置 el 属性或者调用 Vue 实例的 $mount() 方法，其实是只会执行 beforeCreate() 和 created() 方法。</p>
+<p>&emsp;&emsp;我们发现，再一次页面加载时触发了 beforeCreate, created, beforeMount, mounted 这几个钩子。<br><img src="/.cn//%E5%9B%BE%E7%89%872.png" alt><br>&emsp;&emsp;这里我们可以知道，在 new 一个 Vue 实例的时候，如果没有设置 el 属性或者调用 Vue 实例的 $mount() 方法，其实是只会执行 beforeCreate() 和 created() 方法。</p>
 <p>&emsp;&emsp;原因在于，生命周期中的 mountd() 方法其实是把 Vue 实例中的 template属性里的 html 挂载到 el 属性对应的 dom 节点上，如果没有定义 el 属性或者没有调用 Vue 实例的 $mount() 方法，那么就无法执行挂载的动作，因为根本不知道要挂载到哪儿去。</p>
 <p>&emsp;&emsp;同时，可以看到 vm.$ el  在各个生命周期中的值是不同的，在 beforeCreate() 和 created() 中是 undefined，在 beforeMount() 中变成了html 里div里面的内容但我们的msg并还没有渲染，等到执行 mounted() 方法时msg渲染到了页面里。而在 mounted() 方法之后，我们再调用生命周期的方法拿到的 vm.$el 都是跟 mounted() 方法中一样的。</p>
 <p>&emsp;&emsp;因此，我们是无法在 beforeCreate() 和 created() 这两个生命周期中对 dom 做操作的，因为根本就拿不到 Vue 实例对应的那个 dom 节点，所以一般我们是会在 mounted() 中做一些与 dom 有关的操作。</p>
-<p>&emsp;&emsp;我们再试着去更改 input 输入框中的内容，可以看到输入框上方的数据同步发生改变，这就是数据绑定的效果，在更新数据时触发 beforeUpdate 和 updated 钩子，且在 beforeUpdate 触发时，数据已更新完毕。<br><img src="/.cn//%E5%9B%BE%E7%89%873.png" alt="图片3"><br>接下来我们试着在updated钩子里面添加以下代码。</p>
+<p>&emsp;&emsp;我们再试着去更改 input 输入框中的内容，可以看到输入框上方的数据同步发生改变，这就是数据绑定的效果，在更新数据时触发 beforeUpdate 和 updated 钩子，且在 beforeUpdate 触发时，数据已更新完毕。<br><img src="/.cn//%E5%9B%BE%E7%89%873.png" alt><br>接下来我们试着在updated钩子里面添加以下代码。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line">    this.$destroy(); // 该方法会销毁 Vue 实例</span><br><span class="line">&#125;, 2000);</span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;在重新进行上个更改输入框的步骤后，我们发现destroy 仅在调用app.$destroy();时触发，对 vue 实例进行le销毁。销毁完成后，我们再重新改变 msg 的值，vue 不再对此动作进行响应了。但是原先生成的dom元素还存在，可以这么理解，执行了destroy操作，后续就不再受vue控制了。<br><img src="/.cn//%E5%9B%BE%E7%89%874.png" alt="图片4"><br>到此为止，我们的vue实例已经完成了从新建到销毁的整个流程。总结或许有许多不足，欢迎指出。</p>
+<p>&emsp;&emsp;在重新进行上个更改输入框的步骤后，我们发现destroy 仅在调用app.$destroy();时触发，对 vue 实例进行le销毁。销毁完成后，我们再重新改变 msg 的值，vue 不再对此动作进行响应了。但是原先生成的dom元素还存在，可以这么理解，执行了destroy操作，后续就不再受vue控制了。<br><img src="/.cn//%E5%9B%BE%E7%89%874.png" alt><br>到此为止，我们的vue实例已经完成了从新建到销毁的整个流程。总结或许有许多不足，欢迎指出。</p>
 <h3 id="生命周期小结"><a href="#生命周期小结" class="headerlink" title="生命周期小结"></a>生命周期小结</h3><p>生命周期钩子的一些使用方法：<br>beforecreate : 可以在这加个loading事件，在加载实例时触发<br>created : 初始化完成时的事件写在这里，如在这结束loading事件，异步请求也适宜在这里调用<br>mounted : 挂载元素，获取到DOM节点<br>updated : 如果对数据统一处理，在这里写上相应函数<br>beforeDestroy : 可以做一个确认停止事件的确认框</p>
-<p><strong>Vue生命周期图</strong><br><img src="/.cn//%E5%9B%BE%E7%89%875.png" alt="图片5"></p>
+<p><strong>Vue生命周期图</strong><br><img src="/.cn//%E5%9B%BE%E7%89%875.png" alt></p>
 </div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">ahuiyo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://ahuiyo.cn/Vue学习-浅谈Vue生命周期/">http://ahuiyo.cn/Vue学习-浅谈Vue生命周期/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Vue/">Vue</a><a class="post-meta__tags" href="/tags/Vue生命周期/">Vue生命周期</a></div><div class="social-share pull-right"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script><nav id="pagination"><div class="prev-post pull-left"><a href="/ES6-学习笔记-Set和Map数据结构/"><i class="fa fa-chevron-left">  </i><span>ES6 学习笔记 -- Set和Map数据结构</span></a></div><div class="next-post pull-right"><a href="/Vue学习-MVVM模型/"><span>Vue学习--MVVM模型</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="vcomment"></div><script src="https://cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
 var verify = 'false' == true ? true : false;
 var GUEST_INFO = ['nick','mail','link'];

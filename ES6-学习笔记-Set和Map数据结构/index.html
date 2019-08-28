@@ -21,6 +21,7 @@
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&gt;<span class="keyword">const</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line">&gt;</span><br><span class="line">&gt;[<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">2</span>].forEach(<span class="function"><span class="params">x</span> =&gt;</span> s.add(x));</span><br><span class="line">&gt;</span><br><span class="line">&gt;<span class="keyword">for</span> (<span class="keyword">let</span> i <span class="keyword">of</span> s) &#123;</span><br><span class="line">&gt;  <span class="built_in">console</span>.log(i);</span><br><span class="line">&gt;&#125;</span><br><span class="line">&gt;<span class="comment">// 2 3 5 4</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <p>上面代码通过add()方法向 Set 结构加入成员，结果表明 Set 结构不会添加重复的值。根据这个性质，我们也可以使其与扩展运算符(…)相结合进行去重操作。</p>
+<a id="more"></a>
 <blockquote>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&gt;<span class="comment">// 去除数组的重复成员</span></span><br><span class="line">&gt;[...new <span class="built_in">Set</span>(array)]</span><br><span class="line">&gt;</span><br><span class="line">&gt;<span class="comment">// 去除字符串里面的重复字符</span></span><br><span class="line">&gt;[...new <span class="built_in">Set</span>(<span class="string">'ababbc'</span>)].join(<span class="string">''</span>)</span><br><span class="line">&gt;<span class="comment">// "abc"</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
@@ -28,7 +29,6 @@
 <blockquote>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&gt;<span class="keyword">let</span> <span class="keyword">set</span> = new Set();</span><br><span class="line">&gt;let a = NaN;</span><br><span class="line">&gt;let b = NaN;</span><br><span class="line">&gt;<span class="keyword">set</span>.add(a);</span><br><span class="line">&gt;<span class="keyword">set</span>.add(b);</span><br><span class="line">&gt;console.log(<span class="keyword">set</span>)  // Set(1)&#123;<span class="literal">NaN</span>&#125;</span><br><span class="line">&gt;</span><br><span class="line">&gt;<span class="comment">//   结果表明只加入了一个NaN,这表明，在 Set 内部，两个NaN是相等。</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
-<a id="more"></a>
 <h3 id="set的属性和方法"><a href="#set的属性和方法" class="headerlink" title="set的属性和方法"></a>set的属性和方法</h3><p>Set 结构的实例有以下属性。</p>
 <pre><code>-  Set.prototype.constructor：构造函数，默认就是Set函数。
 -  Set.prototype.size：返回Set实例的成员总数。</code></pre><p>Set实例的方法分为两大类：操作方法（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。</p>

@@ -46,9 +46,11 @@
 <td>通用选择器（*）、子选择器（&gt;）、相邻选择器（+）、同胞选择器（~）</td>
 </tr>
 </tbody></table>
-<a id="more"></a>
+<h3 id="权值计算公式："><a href="#权值计算公式：" class="headerlink" title="权值计算公式："></a>权值计算公式：</h3><a id="more"></a>
 
-<h3 id="权值计算公式："><a href="#权值计算公式：" class="headerlink" title="权值计算公式："></a>权值计算公式：</h3><p>权值 = 第一等级选择器 x 个数，第二等级选择器 x 个数，第三等级选择器 x 个数，第四等级选择器 x 个数；</p>
+
+
+<p>权值 = 第一等级选择器 x 个数，第二等级选择器 x 个数，第三等级选择器 x 个数，第四等级选择器 x 个数；</p>
 <h3 id="比较规则："><a href="#比较规则：" class="headerlink" title="比较规则："></a>比较规则：</h3><p>　当两个权值进行比较的时候，是<code>从高到低逐级将等级位上的权重值（如 权值 1,0,0,0 对应--&gt; 第一等级权重值，第二等级权重值，第三等级权重值，第四等级权重值）来进行比较的，</code>而不是简单的 1000<em>个数 + 100</em>个数 + 10<em>个数 + 1</em>个数 的总和来进行比较的，换句话说，低等级的选择器，个数再多也不会越等级超过高等级的选择器的优先级的;</p>
 <h3 id="计算实例1："><a href="#计算实例1：" class="headerlink" title="计算实例1："></a>计算实例1：</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">// 假设下面样式都作用于同一个节点元素`span`，判断下面哪个样式会生效</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">body</span><span class="selector-id">#god</span> <span class="selector-tag">div</span><span class="selector-class">.dad</span> <span class="selector-tag">span</span><span class="selector-class">.son</span> &#123;<span class="attribute">width</span>: <span class="number">200px</span>;&#125;</span><br><span class="line"><span class="selector-tag">body</span><span class="selector-id">#god</span> <span class="selector-tag">span</span><span class="selector-id">#test</span> &#123;<span class="attribute">width</span>: <span class="number">250px</span>;&#125;</span><br></pre></td></tr></table></figure>
 
